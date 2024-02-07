@@ -1,22 +1,19 @@
 #include "mbed.h"
 #include "arm_book_lib.h"
 
-int main()
-{
-   DigitalIn gasDetector(D2);
-   DigitalIn overTempDetector(D3);
-   
-   DigitalOut alarmLed(LED1);
-   
-   gasDetector.mode(PullDown);   
-   overTempDetector.mode(PullDown);
+#define DUTY_MIN 0.025
+#define DUTY_MAX 0.125
+#define PERIOD 0.02
 
-   while (true) {
-      
-      if ( gasDetector || overTempDetector ) {
-         alarmLed = ON;
-      } else {
-         alarmLed = OFF;
-      }
-   }
+PwmOut servo(PF_9);
+
+int main() { 
+    servo.period(PERIOD);
+    servo.write(DUTY_MIN);
+    while(true){
+        servo.write(DUTY_MIN); 
+        delay(2000); 
+        servo.write(DUTY_MAX); 
+        delay(2000); 
+    }        
 }
